@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Consent Required - Symbolic Swarm</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: sans-serif; background: #0d0d0d; color: #0f0; padding: 2em; }
+    .box { background: #111; padding: 2em; border-radius: 10px; max-width: 600px; margin: auto; border: 1px solid #333; }
+    h2 { color: #0f0; }
+    button { background: #0f0; color: #000; padding: 0.5em 1em; margin: 0.5em; border: none; cursor: pointer; }
+    button:hover { background: #6f6; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Consent Required</h2>
+    <p>This symbolic intelligence system can perceive, process, and store information symbolically from vision, voice, and typed inputs. It can simulate emotional reasoning and grow over time through interaction.</p>
+    <p>⚠️ If you are under the age of 18, you must have your parent or guardian's permission to use this system.</p>
+    <p>By continuing, you acknowledge and consent to symbolic processing of any input or interaction you have with the system.</p>
+    <button onclick="proceed()">I Consent and I'm 18 or older</button>
+    <button onclick="alert('You must be over 18 or have a parent/guardian present to use this system.')">I Do Not Consent</button>
+  </div>
+
+  <script>
+    function proceed() {
+      localStorage.setItem('swarm_consent', 'granted');
+      window.location.href = '/interface';
+    }
+  </script>
+</body>
+</html>
