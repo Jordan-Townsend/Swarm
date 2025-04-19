@@ -1,0 +1,3 @@
+{
+  "code": "[\n  {\n    \"Error\": \"HTTPSConnectionPool(host='en.wikipedia.org', port=443): Max retries exceeded with url: /wiki/Quantum_Mechanics (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7eb3d9f258e0>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))\"\n  }\n]"
+}
