@@ -5,14 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body { background: #0d0d0d; color: #0f0; font-family: monospace; padding: 1em; }
-    #cli { width: 100%; height: 80vh; overflow-y: auto; background: #111; padding: 1em; border: 1px solid #444; }
-    #inputLine { width: 100%; background: #0d0d0d; color: #0f0; border: none; font-size: 1em; }
+    #cli { width: 100%; height: 70vh; overflow-y: auto; background: #111; padding: 1em; border: 1px solid #444; }
+    #inputArea { display: flex; margin-top: 1em; }
+    #inputLine { flex: 1; background: #0d0d0d; color: #0f0; border: 1px solid #444; font-size: 1em; padding: 0.5em; }
+    #submitBtn { background: #0f0; color: #000; border: none; padding: 0.5em 1em; cursor: pointer; }
+    #submitBtn:hover { background: #6f6; }
   </style>
 </head>
 <body>
   <h2>Symbolic Swarm: Command Line Interface</h2>
   <div id="cli"></div>
-  <input type="text" id="inputLine" placeholder="USL[Fetch]: gravity" autofocus />
-  <script src="swarm_cli.js"></script>
+  <div id="inputArea">
+    <input type="text" id="inputLine" placeholder="USL[Fetch]: gravity" autofocus />
+    <button id="submitBtn">Submit</button>
+  </div>
+  <script>
+    const cli = document.getElementById("cli");
+    const inputLine = document.getElementById("inputLine");
+    const submitBtn = document.getElementById("submitBtn");
+
+    let memory = {
+      "light": "USL[Define]: Light is both a particle and a wave.",
+      "entropy": "USL[Define]: Entropy is the measure of disorder in a system.",
+      "ai": "USL[Define]: Artificial Intelligence is symbolic automation of decisions."
+    };
+
+    function respond(text) {
+      cli.innerHTML += `<div>> ${text}</div>`;
+      const query = text.split(":")[1]?.trim().toLowerCase();
+      const match = Object.keys(memory).find(key => query?.includes(key));
+      if (match) {
+        cli.innerHTML += `<div>↳ ${memory[match]}</div>`;
+      } else {
+        cli.innerHTML += `<div>↳ No match found.</div>`;
+      }
+      cli.scrollTop = cli.scrollHeight;
+    }
+
+    function handleInput() {
+      const input = inputLine.value.trim();
+      if (input !== "") {
+        respond(input);
+        inputLine.value = "";
+      }
+    }
+
+    inputLine.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") handleInput();
+    });
+
+    submitBtn.addEventListener("click", handleInput);
+  </script>
 </body>
 </html>
