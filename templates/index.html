@@ -1,30 +1,85 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Consent Required - Symbolic Swarm</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Symbolic Swarm Interface</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: sans-serif; background: #0d0d0d; color: #0f0; padding: 2em; }
-    .box { background: #111; padding: 2em; border-radius: 10px; max-width: 600px; margin: auto; border: 1px solid #333; }
+    body { background: #0d0d0d; color: #0f0; font-family: monospace; margin: 0; padding: 1em; }
     h2 { color: #0f0; }
-    button { background: #0f0; color: #000; padding: 0.5em 1em; margin: 0.5em; border: none; cursor: pointer; }
-    button:hover { background: #6f6; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1em; }
+    .block { background: #111; padding: 1em; border: 1px solid #333; border-radius: 5px; }
+    #cli, #log { height: 40vh; overflow-y: auto; }
+    #inputLine { width: 100%; padding: 0.5em; background: #000; color: #0f0; border: 1px solid #444; }
+    #btns button { margin: 0.2em; padding: 0.5em; background: #0f0; color: #000; border: none; cursor: pointer; }
+    iframe, img { width: 100%; border: none; }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h2>Consent Required</h2>
-    <p>This symbolic intelligence system can perceive, process, and store information symbolically from vision, voice, and typed inputs. It can simulate emotional reasoning and grow over time through interaction.</p>
-    <p>⚠️ If you are under the age of 18, you must have your parent or guardian's permission to use this system.</p>
-    <p>By continuing, you acknowledge and consent to symbolic processing of any input or interaction you have with the system.</p>
-    <button onclick="proceed()">I Consent and I'm 18 or older</button>
-    <button onclick="alert('You must be over 18 or have a parent/guardian present to use this system.')">I Do Not Consent</button>
+  <h2>🧠 Symbolic Swarm Interface</h2>
+
+  <div class="grid">
+    <div class="block">
+      <h3>🧾 Symbolic CLI</h3>
+      <div id="cli"></div>
+      <input type="text" id="inputLine" placeholder="USL[Fetch]: gravity" />
+      <div id="btns">
+        <button onclick="handleInput()">Submit</button>
+        <button onclick="listen()">🎙️ Listen</button>
+        <button onclick="speak()">🔊 Speak</button>
+        <button onclick="refreshLog()">📖 Refresh Log</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <h3>📸 Emotion Vision</h3>
+      <img src="/video_feed" alt="Live Camera Feed">
+    </div>
+  </div>
+
+  <div class="block" style="margin-top: 1em;">
+    <h3>🧠 Symbolic Thought Log</h3>
+    <div id="log"></div>
   </div>
 
   <script>
-    function proceed() {
-      localStorage.setItem('swarm_consent', 'granted');
-      window.location.href = '/interface';
+    const cli = document.getElementById("cli");
+    const inputLine = document.getElementById("inputLine");
+    const logPanel = document.getElementById("log");
+
+    function handleInput() {
+      const text = inputLine.value.trim();
+      if (!text) return;
+      cli.innerHTML += `<div>> ${text}</div>`;
+      inputLine.value = "";
+      // In a real app, this would POST to a route
+    }
+
+    function listen() {
+      fetch('/listen')
+        .then(res => res.text())
+        .then(text => cli.innerHTML += `<div>🎙️ ${text}</div>`);
+    }
+
+    function speak() {
+      const msg = prompt("Enter something to speak:");
+      if (msg) {
+        fetch('/speak', {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: msg })
+        }).then(() => cli.innerHTML += `<div>🔊 Speaking: ${msg}</div>`);
+      }
+    }
+
+    function refreshLog() {
+      fetch('/log')
+        .then(res => res.json())
+        .then(data => {
+          logPanel.innerHTML = "";
+          data.forEach(entry => {
+            logPanel.innerHTML += `<div>[${entry.timestamp}] ${entry.event}</div>`;
+          });
+        });
     }
   </script>
 </body>
