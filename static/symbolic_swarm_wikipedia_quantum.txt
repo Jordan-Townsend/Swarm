@@ -1,0 +1,3 @@
+{
+  "code": "[\n  {\n    \"Topic\": \"Quantum Mechanics\",\n    \"Summary\": \"The study of physical phenomena at nanoscopic scales.\",\n    \"Thread\": \"Quantum_01\",\n    \"Hash\": \"QMHASH001\"\n  }\n]"
+}
