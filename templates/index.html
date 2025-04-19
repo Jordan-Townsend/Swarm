@@ -11,7 +11,9 @@
     #cli, #log { height: 40vh; overflow-y: auto; }
     #inputLine { width: 100%; padding: 0.5em; background: #000; color: #0f0; border: 1px solid #444; }
     #btns button { margin: 0.2em; padding: 0.5em; background: #0f0; color: #000; border: none; cursor: pointer; }
+    #btns button:hover { background: #6f6; }
     iframe, img { width: 100%; border: none; }
+    #camStatus { color: #f80; font-size: 0.9em; margin-top: 0.5em; }
   </style>
 </head>
 <body>
@@ -32,7 +34,8 @@
 
     <div class="block">
       <h3>📸 Emotion Vision</h3>
-      <img src="/video_feed" alt="Live Camera Feed">
+      <img id="camFeed" src="/video_feed" alt="Live Camera Feed" onerror="cameraFail()" onload="cameraSuccess()">
+      <div id="camStatus">📷 Initializing camera...</div>
     </div>
   </div>
 
@@ -45,13 +48,13 @@
     const cli = document.getElementById("cli");
     const inputLine = document.getElementById("inputLine");
     const logPanel = document.getElementById("log");
+    const camStatus = document.getElementById("camStatus");
 
     function handleInput() {
       const text = inputLine.value.trim();
       if (!text) return;
       cli.innerHTML += `<div>> ${text}</div>`;
       inputLine.value = "";
-      // In a real app, this would POST to a route
     }
 
     function listen() {
@@ -80,6 +83,16 @@
             logPanel.innerHTML += `<div>[${entry.timestamp}] ${entry.event}</div>`;
           });
         });
+    }
+
+    function cameraFail() {
+      camStatus.innerText = "❌ Camera connection failed. Check webcam access or server route.";
+      camStatus.style.color = "#f33";
+    }
+
+    function cameraSuccess() {
+      camStatus.innerText = "✅ Camera connected.";
+      camStatus.style.color = "#0f0";
     }
   </script>
 </body>
