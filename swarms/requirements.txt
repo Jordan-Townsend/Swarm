@@ -1,0 +1,6 @@
+flask
+requests
+pyttsx3
+speechrecognition
+pyaudio
+opencv-python

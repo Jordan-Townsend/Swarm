@@ -1,0 +1,3 @@
+{
+  "code": "USL[Topic]: Energy\nUSL[Define]: Energy is the capacity to do symbolic work."
+}
